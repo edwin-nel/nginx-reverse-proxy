@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+
+  reverseproxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+
+  api:
+    depends_on:
+      - reverseproxy
+    build:
+      context: ./webhook
+      dockerfile: Dockerfile
+    expose:
+      - "5000"
+    restart: always
+
+# docker-compose build
+# docker-compose up -d
+# docker-compose down
+
+# Browse to: http://localhost/weatherforecast
+
+
+# https://blog.tonysneed.com/2019/10/13/enable-ssl-with-asp-net-core-using-nginx-and-docker/
